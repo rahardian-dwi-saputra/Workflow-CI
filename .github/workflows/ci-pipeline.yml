@@ -71,8 +71,11 @@ jobs:
         echo "RUN_ID=$RUN_ID" >> $GITHUB_ENV
         echo "Latest run_id: $RUN_ID"
 
+    # Build Docker Model
     - name: Build Docker Model
       run: |
+        export MLFLOW_ALLOW_FILE_STORE=true
+        export MLFLOW_TRACKING_URI="file://${{ github.workspace }}/mlruns"
         mlflow models build-docker --model-uri "runs:/${{ env.RUN_ID }}/model" --name "cc" --env-manager=local
 
     - name: Log in to Docker Hub
