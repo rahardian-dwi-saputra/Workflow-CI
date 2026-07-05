@@ -43,19 +43,12 @@ jobs:
       run: |
         mlflow run MLproject --env-manager=local
 
-    # Save models to GitHub Repository
-    - name: Get latest MLflow run_id
-      run: |
-        git config --global user.name ${{ secrets.USERNAME }}
-        git config --global user.email ${{ secrets.EMAIL }}
-        git add mlruns/
-        git commit -m "Save mlruns from CI run"
-        git push origin main
+    
 
     # Mendapatkan Run ID
     - name: Get Run ID
       run: |
-        RUN_ID=$(ls -td mlruns/0/*/ | head -n 1 | cut -d'/' -f3)
+        RUN_ID=$(basename $(ls -td mlruns/0/*/ | grep -v 'models' | head -n 1))
         echo "RUN_ID=$RUN_ID" >> $GITHUB_ENV
         echo "Latest run_id: $RUN_ID"
 
