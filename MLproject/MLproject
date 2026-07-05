@@ -1,0 +1,11 @@
+name: Workflow-CI
+ 
+conda_env: conda.yaml
+ 
+entry_points:
+  main:
+    parameters:
+      dataset : {type: string, default: "heart_preprocessing/heart_preprocessing.csv"}
+      C: {type: float, default: 1.0}
+      penalty: {type: string, default: l2}
+    command: "python modelling.py {C} {penalty} {dataset}"
