@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: [ "main" ]
 
+permissions:
+  contents: write
+
 env:
   CSV_URL: "MLproject/heart_preprocessing/heart_preprocessing.csv"
 
