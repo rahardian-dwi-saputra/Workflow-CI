@@ -43,6 +43,8 @@ jobs:
     # Run as a mlflow project
     - name: Run mlflow project
       run: |
+        export MLFLOW_ALLOW_FILE_STORE=true
+        export MLFLOW_TRACKING_URI="file://${{ github.workspace }}/mlruns"
         mlflow run ./MLproject --env-manager=local
 
     # Save models to GitHub Repository
