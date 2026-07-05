@@ -48,10 +48,11 @@ jobs:
     # Mendapatkan Run ID
     - name: Get Run ID
       run: |
-        RUN_ID=$(find mlruns/0/ -maxdepth 1 -type d -regextype posix-extended -regex '^mlruns/0/[a-f0-9]{32}$' -printf '%T@ %p\n' | sort -n | tail -n 1 | awk '{print $2}' | cut -d'/' -f3)
-        RUN_ID=$(basename $(ls -td mlruns/0/*/ | grep -v 'models' | head -n 1))
+        FOLDER_PATH=$(ls -td mlruns/0/*/ | grep -v 'models' | head -n 1)
+        RUN_ID=$(basename "$FOLDER_PATH")
+        
         echo "RUN_ID=$RUN_ID" >> $GITHUB_ENV
-        echo "Latest run_id: $RUN_ID"
+        echo "Latest run_id yang ditemukan: $RUN_ID"
 
     - name: Build Docker Model
       run: |
