@@ -41,19 +41,19 @@ jobs:
     # Run as a mlflow project
     - name: Run mlflow project
       run: |
-        export MLFLOW_TRACKING_URI=./mlruns
-        mlflow run MLproject --env-manager=local
+        export MLFLOW_TRACKING_URI=sqlite:///mlflow.db
+        mlflow run ./MLproject --env-manager=local --backend-config '{"default-artifact-root": "./mlartifacts"}'
 
     
 
     # Mendapatkan Run ID
     - name: Get Run ID
       run: |
-        FOLDER_PATH=$(ls -td mlruns/0/*/ | grep -v 'models' | head -n 1)
+        FOLDER_PATH=$(ls -td mlartifacts/0/*/ | grep -v 'models' | head -n 1)
         RUN_ID=$(basename "$FOLDER_PATH")
         
         if [ -z "$RUN_ID" ]; then
-          echo "ERROR: Folder Run ID tidak ditemukan di mlruns/0/"
+          echo "ERROR: Folder Run ID tidak ditemukan di mlartifacts/0/"
           exit 1
         fi
 
@@ -62,7 +62,7 @@ jobs:
 
     - name: Build Docker Model
       run: |
-        export MLFLOW_TRACKING_URI=./mlruns
+        export MLFLOW_TRACKING_URI=sqlite:///mlflow.db
         mlflow models build-docker --model-uri "runs:/${{ env.RUN_ID }}/model" --name "cc" --env-manager=local
 
     - name: Log in to Docker Hub
