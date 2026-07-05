@@ -30,7 +30,7 @@ if __name__ == "__main__":
     C = float(sys.argv[1]) if len(sys.argv) > 1 else 1.0
     penalty = sys.argv[2] if len(sys.argv) > 2 and sys.argv[2] in ["l1", "l2"] else "l2"
 
-    with mlflow.start_run():
+    with mlflow.start_run(nested=True):
         model = LogisticRegression(
             C=C, 
             penalty=penalty, 
